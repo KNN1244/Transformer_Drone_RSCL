@@ -1,0 +1,21 @@
+# MATLAB / Simulink
+*.asv
+*.m~ 
+*.slxc
+*.autosave
+*.mex*
+*.p
+*.mat
+*.fig
+*.mdl.r*
+simevents_log.xml
+slprj/
+slexec_vm_simstruct/
+codegen/
+*.slx.bak
+*.mdl.bak
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
