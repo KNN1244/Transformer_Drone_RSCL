@@ -1,6 +1,12 @@
 % Parameters for quadcopter_package_delivery
 % Copyright 2021-2025 The MathWorks, Inc.
 
+% Angles of Arms
+arm4angle = -20; %Goes negative
+arm3angle = -20; %goes negative
+arm2angle = 20; %Goes posiive
+arm1angle = 20; %Goes positive
+
 % Size of the ground
 planex = 12.5;           % m
 planey = 8.5;            % m
@@ -16,7 +22,7 @@ battery_capacity = 7.6*3;
 rho_pla   = 1.25;            % g/cm^3 
 
 % Measured drone mass
-drone_mass = 1.2726;
+drone_mass = 2;
 %% package ground contact properties
 pkgGrndStiff  = 1000;
 pkgGrndDamp   = 300;
@@ -28,7 +34,7 @@ pkgSize = [1 1 1]*0.14; % m
 pkgDensity = 1/(pkgSize(1)*pkgSize(2)*pkgSize(3)); % kg/m^3
 
 %% Propeller parameters
-propeller.diameter = 0.254; % m
+propeller.diameter = 0.264; % m
 propeller.Kthrust  = 0.1072; 
 propeller.Kdrag    = 0.01;
 
