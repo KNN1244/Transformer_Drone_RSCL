@@ -1,12 +1,46 @@
 % Parameters for quadcopter_package_delivery
 % Copyright 2021-2025 The MathWorks, Inc.
 
-% Angles of Arms
-arm4angle = -20; %Goes negative
-arm3angle = -20; %goes negative
-arm2angle = 20; %Goes posiive
-arm1angle = 20; %Goes positive
+%% Angles of Arms
+% Position format = [1 2 3 4] in degress
+Tshape = [-45 -45 45 45]; % can be reveresed
+Oshape = [90 90 90 90];
+Hshape = [-45 45 45 -45];
+Xshape = [0 0 0 0];
 
+drone_shape = [Xshape Tshape Hshape Oshape];
+drone_timing = [0 10 20 30];
+
+% Initialize set angles
+arm4angle = [];
+arm3angle = [];
+arm2angle = [];
+arm1angle = [];
+
+% Initialize position times
+arm4timespots = [];
+arm3timespots = [];
+arm2timespots = [];
+arm1timespots = [];
+
+for x = 0:(length(drone_shape) / 4) -1
+    arm1angle = [arm1angle; drone_shape(4*x + 1)];
+    arm2angle = [arm2angle; drone_shape(4*x + 2)];
+    arm3angle = [arm3angle; drone_shape(4*x + 3)];
+    arm4angle = [arm4angle; drone_shape(4*x + 4)];
+
+    arm4timespots = [arm4timespots; drone_timing(x+1)];
+    arm3timespots = [arm3timespots; drone_timing(x+1)];
+    arm2timespots = [arm2timespots; drone_timing(x+1)];
+    arm1timespots = [arm1timespots; drone_timing(x+1)];
+end
+
+arm4 = timeseries(arm4angle, arm4timespots);
+arm3 = timeseries(arm3angle, arm3timespots);
+arm2 = timeseries(arm2angle, arm2timespots);
+arm1 = timeseries(arm1angle, arm1timespots);
+
+%% Auxilary Property
 % Size of the ground
 planex = 12.5;           % m
 planey = 8.5;            % m
