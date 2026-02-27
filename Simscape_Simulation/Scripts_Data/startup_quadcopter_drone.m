@@ -25,6 +25,8 @@ if(open_start_content)
     [waypoints, timespot_spl, spline_data, spline_yaw, wayp_path_vis] = quadcopter_package_select_trajectory(1,true);
     % Set Python environment (if needed)
     check_pyenv
+    % Setup transformation presets
+    armPresets = getArmPresets();
     % Open Model
     t_drone % Not for Workshop
     % Open Exercises
