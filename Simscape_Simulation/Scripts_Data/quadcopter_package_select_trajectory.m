@@ -81,6 +81,37 @@ switch (path_number)
         min_speed = 0.1;
         xApproach = [4 1];
         vApproach = 0.1;
+
+    case 7
+        % Path 1 handles the linear paths
+        % Path 2 handles the circular paths
+        xpathL = [0   0  0  0   0  -10 10];
+        ypathL = [0   0  10 -10 0  0  0];
+        zpathL = [.15 10 10 10  10 10 10];
+
+        % Change smoothness of rotation path
+        % 1 = Linear pathing from max x and y values
+        rotation_quality = 3;
+        
+        xpathCCW = [];
+        ypathCCW = [];
+        
+        for step = 1:rotation_quality * 4
+            xpathCCW = [xpathCCW 10.0*cos(step*pi/(2*rotation_quality))];
+            ypathCCW = [ypathCCW 10.0*sin(step*pi/(2*rotation_quality))];
+        end
+        [~, points] = size(xpathCCW);
+        zpathRotate = 10*ones(1, points);
+        [xpathCCW flip(xpathCCW(:, 1:points-1))]
+
+        waypoints = [ ...
+            xpathL xpathCCW    flip(xpathCCW(:, 1:points-1))  10  10
+            ypathL ypathCCW    flip(ypathCCW(:, 1:points-1))  0   0
+            zpathL zpathRotate zpathRotate(:, 2:points)       10  0.15];
+        max_speed = 1;
+        min_speed = 0.1;
+        xApproach = [4 1];
+        vApproach = 0.1;
 end
 
 % Only call the function to calculate target speed and yaw angle if needed
