@@ -85,7 +85,7 @@ switch (path_number)
     case 7
         % Path 1 handles the linear paths
         % Path 2 handles the circular paths
-        scale = 2.0;
+        scale = 4.0;
         xpathL = [0   0  0  0   0  -scale  scale];
         ypathL = [0   0  scale  -scale  0  0   0];
         zpathL = [.15 scale  scale  scale   scale  scale   scale];
