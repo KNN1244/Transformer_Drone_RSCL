@@ -54,7 +54,7 @@ plot3(0.5*0.25*sin(linspace(0,2*pi,30))+waypoints(1,end),0.5*0.25*cos(linspace(0
 % plot3(load_final_x,load_final_y,load_final_z,'r+','MarkerSize',8)
 wayp_unique = unique(waypoints','rows');
 plot3(wayp_unique(:,1),wayp_unique(:,2),wayp_unique(:,3),'o','MarkerSize',6,'MarkerFaceColor','cyan','MarkerEdgeColor','none','DisplayName','Waypoints')
-legend({'Ref','Path','','','','','Load','Waypoints'})
+% legend({'Ref','Path','','','','','Load','Waypoints'})
 
 ah = gca;
 ah.Clipping = 'off';

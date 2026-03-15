@@ -47,7 +47,7 @@ planey = 8.5;            % m
 planedepth = 0.2;        % m, distance from plane to the reference frame
 
 % Battery Capacity
-battery_capacity = 1.1*3; % 3300 mAh
+battery_capacity = 7.6*3;
 
 %% Material Property
 % Assuming the arm of the drone is manufractured by 3D Printing, the ideal
@@ -68,9 +68,9 @@ pkgSize = [1 1 1]*0.14; % m
 pkgDensity = 1/(pkgSize(1)*pkgSize(2)*pkgSize(3)); % kg/m^3
 
 %% Propeller parameters
-propeller.diameter = 0.264; % m
-propeller.Kthrust  = 0.1072; 
-propeller.Kdrag    = 0.01;
+propeller.diameter = 0.264; % meters
+propeller.Kthrust  = 0.0450; % Ct = T / (rho*n^2*D^4)
+propeller.Kdrag    = 0.01; 
 
 air_rho            = 1.225;  % kg/m^3
 air_temperature    = 273+25; % degK
