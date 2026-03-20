@@ -129,8 +129,6 @@ qc_motor.max_power  = 1260;  % Peak power in Watts for flycolor 70mm EDF
 % time_const -> less makes the drone fly smoother
 qc_motor.time_const = 0.02; % increased to reduce calculation errors
 qc_motor.efficiency = 80; % Slightly less efficient than propeller motor
-% Still needs work with motor speed, need to look into flight controller
-% block to make it work properly
 qc_motor.efficiency_spd = 5000; %35000 % EDFs spins much faster than propellers
 qc_motor.efficiency_trq = 0.05; % N*m
 qc_motor.rotor_damping  = 5e-8; % N*m/(rad/s)
