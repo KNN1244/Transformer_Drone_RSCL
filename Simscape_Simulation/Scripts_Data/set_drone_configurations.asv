@@ -57,17 +57,13 @@ if (transforms)
         mix_history(:,:,form) = current_mixer;
         
         for arm = 1:4
-            shape = ceil(form / 2);
-            angles(form, arm) = armPresets(configs(:,shape), arm);
+            angles(form, arm) = armPresets(config_idx, arm);
         end
     end
 else
     % Static case
-    angles = zeros([1 4]);
+    angles = armPresets(configs(:, 1), :);
     timespots = 0;
-    for x = 1:4
-        angles(:, x) = armPresets(configs(:, 1), x);
-    end
     [~,~,~,~,~,~, mix_history] = adjust_flight_pid(configs(:, 1));
 end
 
@@ -79,3 +75,47 @@ arm1 = timeseries(angles(:, 1), timespots);
 
 % Create the Mixer timeseries (Simulink's From Workspace block will read this)
 mixer_ts = timeseries(mix_history, timespots);
+
+if (transforms)
+    
+    sections = (2 * num_of_transforms) - 1;
+    angles = zeros([sections 4]);
+    timespots = zeros([1 sections]);
+    
+    time = 0;
+    time_inc = 0;
+    
+    for form = 1:sections
+        % Determines the proper time stamps for when transformations occur
+        timespots(:, form) = time;
+        if form == 1
+            time_inc = hold_time - (transistion_time / 2);
+        elseif mod(form, 2) == 1
+            time_inc = hold_time - transistion_time;
+        elseif mod(form, 2) == 0
+            time_inc = transistion_time;
+        end
+        time = time + time_inc;
+        
+        % Determines what angle each arm is at each time
+        for arm = 1:4
+            shape = ceil(form / 2);
+            angles(form, arm) = armPresets(configs(:,shape), arm);
+        end
+    end
+else
+    angles = zeros([1 4]);
+    timespots = 0;
+
+    for x = 1:4
+        angles(:, x) = armPresets(configs(:, 1), x);
+    end
+end
+
+% angles
+% timespots
+
+arm4 = timeseries(angles(:, 4), timespots);
+arm3 = timeseries(angles(:, 3), timespots);
+arm2 = timeseries(angles(:, 2), timespots);
+arm1 = timeseries(angles(:, 1), timespots);
