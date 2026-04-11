@@ -14,18 +14,18 @@ hold_time;
 transistion_time;
 transforms;
 
+for n = 1:length(configs)
+    if (configs(:, n) < 1) || (configs(:,n) > 4)
+        configs(:,n) = 1;
+    end
+end
+
 % Ensures transistion time is at least 0.2s shorter than hold time
 if hold_time <= transistion_time
     transistion_time = hold_time - 0.2;
 end
 
 num_of_transforms = length(configs);
-
-% Initialize set angles
-angles = [];
-
-% Initialize position times
-timespots = [];
 
 if (transforms)
     % Minimum numer of time stamps to prevent early transformations
