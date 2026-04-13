@@ -62,22 +62,20 @@ switch (path_number)
         xApproach = [4 0.5];
         vApproach = 0.1;
 
-    case 5 % Manual Timing
+    case 5 % Industrial Inspection Course (Manual Timing)
          waypoints = [ ...
             % start, up, right in H, up in O, forward in H, stop for T,
             % diagonal drip in O, land in X
-            % Add a lot of buffer waypoints to make the drone follow the
-            % spine more closely
-            0    0   0 0 0 6 6 6 6 6 6 6 6 6 9 9 9
-            0    0   0 0 0 0 0 0 0 0 0 0 6 6 6 6 6
-            0.15 1.5 3 3 3 3 3 3 3 6 6 6 6 6 3 3 0.14]; 
+            0    0    0 0 6 6 6 6 6 6 9 9
+            0    0 0 0 0 0 0 0 6 6 6 6
+            0.15 1 3 3 3 3 6 6 6 6 3 0.14]; 
             
         spline_data = waypoints';
-        timespot_spl = [0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160]';
+        timespot_spl = [0 10 20 30 40 50 60 70 80 90 100 110]';
         
         % Yaw Definitions (Radians)
         % 0 = Facing +X, pi/2 = Facing +Y
-        spline_yaw = [0 0 0 0 0 0 0 0 0 0 0 pi/2 pi/2 0 0 0 0];
+        spline_yaw = [0, 0, 0, 0, 0, 0, 0, pi/2, pi/2, 0, 0, 0];
         
     case 6 
         waypoints = [ ...
