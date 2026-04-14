@@ -142,14 +142,14 @@ switch (path_number)
     case 7
         % Path 1 handles the linear paths
         % Path 2 handles the circular paths
-        scale = 4.0;
+        scale = 3.0;
         xpathL = [0   0  0  0   0  -scale  scale];
         ypathL = [0   0  scale  -scale  0  0   0];
         zpathL = [.15 scale  scale  scale   scale  scale   scale];
 
         % Change smoothness of rotation path
         % 1 = Linear pathing from max x and y values
-        rotation_quality = 3;
+        rotation_quality = 6;
         
         xpathCCW = [];
         ypathCCW = [];
@@ -166,8 +166,8 @@ switch (path_number)
             xpathL xpathCCW    flip(xpathCCW(:, 1:points-1))  scale  scale
             ypathL ypathCCW    flip(ypathCCW(:, 1:points-1))  0   0
             zpathL zpathRotate zpathRotate(:, 2:points)       scale  0.15];
-        max_speed = 1;
-        min_speed = 0.1;
+        max_speed = 0.5;
+        min_speed = 0.3;
         xApproach = [4 1];
         vApproach = 0.1;
 end
