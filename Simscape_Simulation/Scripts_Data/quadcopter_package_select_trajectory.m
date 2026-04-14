@@ -62,23 +62,72 @@ switch (path_number)
         xApproach = [4 0.5];
         vApproach = 0.1;
 
-    case 5 % Manual Timing
-         waypoints = [ ...
-            % start, up, right in H, up in O, forward in H, stop for T,
-            % diagonal drip in O, land in X
-            % Add a lot of buffer waypoints to make the drone follow the
-            % spine more closely
-            0    0   0 0 0 6 6 6 6 6 6 6 6 6 9 9 9
-            0    0   0 0 0 0 0 0 0 0 0 0 6 6 6 6 6
-            0.15 1.5 3 3 3 3 3 3 3 6 6 6 6 6 3 3 0.14]; 
+    case 5 % Manual Timing Obstacle Course (30s Hold)
+        % config = [1 6 2 1 6 4 1 2]
+        % hold time = 30 sec
+        wayp_table = [ ...
+            % X      Y      Z      
+            0.0,    0.0,    0.15;  % T=0   Station 1: Start (X)
+            0.0,    0.0,    0.15;   % T=10   Station 1: Start (X)
             
-        spline_data = waypoints';
-        timespot_spl = [0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160]';
-        
-        % Yaw Definitions (Radians)
-        % 0 = Facing +X, pi/2 = Facing +Y
-        spline_yaw = [0 0 0 0 0 0 0 0 0 0 0 pi/2 pi/2 0 0 0 0];
-        
+            0.0,    0.0,    2.00;  % T=30  Station 2: Between walls (X-H)
+            0.0,    0.0,    2.00;  % T=35  Buffer
+            0.0,    0.0,    2.00;  % T=40  Buffer
+            
+            3.0,    0.0,    2.00;  % T=60  Station 3: Up rings (H-O)
+            3.0,    0.0,    2.00;  % T=65  Buffer (Rotation Start)
+            3.0,    0.0,    2.00;  % T=70  Buffer
+            
+            3.0,    0.0,    4.00;  % T=90  Station 4: O-X Buffer
+            3.0,    0.0,    4.00;  % T=95  Buffer (Heading Change)
+            3.0,    0.0,    4.00;  % T=100 Buffer
+            
+            3.0,    0.0,    4.00;  % T=120 Station 5: X-H shape other walls
+            3.0,    0.0,    4.00;  % T=125 Buffer
+            3.0,    0.0,    4.00;  % T=130 Buffer
+            
+            3.0,    2.5,    4.00;  % T=150 Station 6: H-T shape
+            3.0,    3.0,    4.00;  % T=155 Buffer
+            3.0,    3.0,    4.00;  % T=160 Buffer
+            
+            3.0,    3.0,    4.00;  % T=180 Station 7: T-X Buffer
+            3.0,    3.0,    4.00;  % T=185 Buffer
+            3.0,    2.5,    4.00;  % T=190 Buffer
+            
+            3.0,    4.0,    3.00;  % T=210 Station 8: X-O shape
+            3.0,    4.0,    3.00;  % T=215 Buffer
+            3.0,    4.0,    3.00;  % T=220 Buffer
+            
+            3.0,    4.0,    0.14]; % T=230 Buffer
+    
+        waypoints = wayp_table';
+        spline_data = wayp_table;
+        % Synchronized Timestamps
+        timespot_spl = [0, 10, ...             % S1
+                        30, 35, 40, ...        % S2
+                        60, 65, 70, ...        % S3
+                        90, 95, 100, ...       % S4
+                        120, 125, 130, ...     % S5
+                        150, 155, 160, ...     % S6
+                        180, 185, 190, ...     % S7
+                        210, 215, 220, ...     % S8
+                        230]';                 % S9
+    
+        % Yaw Logic:
+        % S1-S2: Face 0 rad
+        % S3: Rotate to pi/3
+        % S4-S9: Face pi/2
+        spline_yaw = [ ...
+            0, 0, ...                        % Station 1
+            0, 0, 0, ...                     % Station 2
+            0, pi/3, pi/3, ...               % Station 3 (Rotate)
+            pi/2, pi/2, pi/2, ...            % Station 4
+            pi/2, pi/2, pi/2, ...            % Station 5
+            pi/2, pi/2, pi/2, ...            % Station 6
+            pi/2, pi/2, pi/2, ...            % Station 7
+            pi/2, pi/2, pi/2, ...            % Station 8
+            pi/2]';                          % Station 9
+            
     case 6 
         waypoints = [ ...
             0   10   20   25   35   45   55   65   75   85   95; % x

@@ -147,3 +147,6 @@ kd_altitude = 0.50;
 kp_motor = 0.012; % Significantly increased from 0.00375
 ki_motor = 0.0015; % Increased to hold high RPM under load
 kd_motor = 0.0001; % Slight D-term to prevent RPM overshoot 
+
+%% Other paramters
+show_obstacles = false;

@@ -15,6 +15,7 @@ configs;
 hold_time;
 transistion_time;
 transforms;
+show_obstacles;
 
 for n = 1:length(configs)
     if (configs(:, n) < 1) || (configs(:,n) > size(armPresets, 1))
@@ -37,15 +38,20 @@ if (transforms)
     is_passthrough = false; % First shape is never a pass-through
     
     for i = 2:length(original_configs)
-        if original_configs(i) ~= 1 && original_configs(i-1) ~= 1
+        % CHANGE: Only inject if they are non-X AND they are different shapes
+        if original_configs(i) ~= 1 && original_configs(i-1) ~= 1 && ...
+           original_configs(i) ~= original_configs(i-1)
+            
             % Inject X-shape and mark it as a pass-through
             new_configs = [new_configs, 1, original_configs(i)];
             is_passthrough = [is_passthrough, true, false];
         else
+            % Keep the existing shape (even if it's a repeat like 2 -> 2)
             new_configs = [new_configs, original_configs(i)];
             is_passthrough = [is_passthrough, false];
         end
     end
+    
     configs = new_configs;
     num_of_transforms = length(configs);
     

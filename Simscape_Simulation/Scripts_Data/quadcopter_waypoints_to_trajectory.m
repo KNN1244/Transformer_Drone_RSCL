@@ -369,5 +369,3 @@ end
 if((size(waypoints,2)==3))
     waypoints = waypoints';
 end
-
-
