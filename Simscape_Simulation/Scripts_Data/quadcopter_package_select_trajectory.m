@@ -68,7 +68,6 @@ switch (path_number)
         wayp_table = [ ...
             % X      Y      Z      
             0.0,    0.0,    0.15;  % T=0   Station 1: Start (X)
-            0.0,    0.0,    0.15;   % T=10   Station 1: Start (X)
             
             0.0,    0.0,    2.00;  % T=30  Station 2: Between walls (X-H)
             0.0,    0.0,    2.00;  % T=35  Buffer
@@ -78,55 +77,49 @@ switch (path_number)
             3.0,    0.0,    2.00;  % T=65  Buffer (Rotation Start)
             3.0,    0.0,    2.00;  % T=70  Buffer
             
-            3.0,    0.0,    4.00;  % T=90  Station 4: O-X Buffer
-            3.0,    0.0,    4.00;  % T=95  Buffer (Heading Change)
-            3.0,    0.0,    4.00;  % T=100 Buffer
-            
-            3.0,    0.0,    4.00;  % T=120 Station 5: X-H shape other walls
+            3.0,    0.0,    4.00;  % T=120 Station 4: X-H shape other walls
             3.0,    0.0,    4.00;  % T=125 Buffer
             3.0,    0.0,    4.00;  % T=130 Buffer
             
-            3.0,    2.5,    4.00;  % T=150 Station 6: H-T shape
+            3.0,    2.5,    4.00;  % T=150 Station 5: H-T shape
             3.0,    3.0,    4.00;  % T=155 Buffer
             3.0,    3.0,    4.00;  % T=160 Buffer
             
-            3.0,    3.0,    4.00;  % T=180 Station 7: T-X Buffer
+            3.0,    3.0,    4.00;  % T=180 Station 6: T-X Buffer
             3.0,    3.0,    4.00;  % T=185 Buffer
             3.0,    2.5,    4.00;  % T=190 Buffer
             
-            3.0,    4.0,    3.00;  % T=210 Station 8: X-O shape
+            3.0,    4.0,    3.00;  % T=210 Station 7: X-O shape
             3.0,    4.0,    3.00;  % T=215 Buffer
             3.0,    4.0,    3.00;  % T=220 Buffer
             
-            3.0,    4.0,    0.14]; % T=230 Buffer
+            3.0,    4.0,    0.14]; % T=230 Station 8: Landing (O)
     
         waypoints = wayp_table';
         spline_data = wayp_table;
         % Synchronized Timestamps
-        timespot_spl = [0, 10, ...             % S1
+        timespot_spl = [0, ...                 % S1
                         30, 35, 40, ...        % S2
                         60, 65, 70, ...        % S3
                         90, 95, 100, ...       % S4
                         120, 125, 130, ...     % S5
                         150, 155, 160, ...     % S6
                         180, 185, 190, ...     % S7
-                        210, 215, 220, ...     % S8
-                        230]';                 % S9
+                        210]';                 % S8
     
         % Yaw Logic:
         % S1-S2: Face 0 rad
         % S3: Rotate to pi/3
         % S4-S9: Face pi/2
         spline_yaw = [ ...
-            0, 0, ...                        % Station 1
+            0, ...                           % Station 1
             0, 0, 0, ...                     % Station 2
-            0, pi/3, pi/3, ...               % Station 3 (Rotate)
-            pi/2, pi/2, pi/2, ...            % Station 4
+            0, pi/4, pi/4, ...               % Station 3 (Rotate)
+            pi/4, pi/2, pi/2, ...            % Station 4
             pi/2, pi/2, pi/2, ...            % Station 5
             pi/2, pi/2, pi/2, ...            % Station 6
             pi/2, pi/2, pi/2, ...            % Station 7
-            pi/2, pi/2, pi/2, ...            % Station 8
-            pi/2]';                          % Station 9
+            pi/2]';                          % Station 8
             
     case 6 
         waypoints = [ ...

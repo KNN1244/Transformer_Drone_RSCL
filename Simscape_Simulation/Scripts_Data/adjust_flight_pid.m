@@ -1,5 +1,5 @@
 function [kp_att, ki_att, kd_att, kp_yw, ki_yw, kd_yw, mixer_matrix] = adjust_flight_pid(configuration)
-    % Default Matrix (Standard X/H/T shapes)
+    % Default Matrix (Standard X/H shapes)
                 % Roll Pitch Yaw Thrust
     standard_mixer = [ 1 -1 -2  1; ... % w1
                       -1 -1  2  1; ... % w2
@@ -49,10 +49,11 @@ function [kp_att, ki_att, kd_att, kp_yw, ki_yw, kd_yw, mixer_matrix] = adjust_fl
             kp_yw         = 25.7010*4*2;
             ki_yw         = 5.9203*0.01;
             kd_yw         = 78.2000*0.01;
-            mixer_matrix = [ 1 -0.4 -2 1; ... % w1 left flat side
-                            -1 -0.4  2 1; ... % w2 right flat side
-                             0.1 0.8 1 0.7; ... % w3 left tail side
-                             0.1 0.8 -1 0.7];    % w4 right tail side
+            %                Roll   Pitch   Yaw   Thrust
+            mixer_matrix = [ 1.0,  -1.0,   -2.0,   1.0; ... % w1: Front-Left (Wide)
+                            -1.0,  -1.0,    2.0,   1.0; ... % w2: Front-Right (Wide)
+                             0.2,   0.9,    2.0,   0.7; ... % w3: Rear-Left (Tail)
+                            -0.2,   0.9,   -2.0,   0.7];    % w4: Rear-Right (Tail)
 
         case 5 % O Shape Alt
             kp_att    = 128.505;
@@ -88,10 +89,10 @@ function [kp_att, ki_att, kd_att, kp_yw, ki_yw, kd_yw, mixer_matrix] = adjust_fl
             kp_yw     = 25.7010*4*2;
             ki_yw     = 5.9203*0.01;
             kd_yw     = 78.2000*0.01;
-            mixer_matrix = [  0.1, -0.9, -2.0, 0.7; ... % w1 Front Left (CW)
-                              0.1, -0.9,  2.0, 0.7; ... % w2 Front Right (CCW)
-                              1.0,  0.4,  2.0, 1.0; ... % w3 Rear Left (CCW)
-                             -1.0,  0.4, -2.0, 1.0];    % w4 Rear Right (CW)
+            mixer_matrix = [  0.2, -0.9, -2.0, 0.7; ... % w1 Front Left (CW)
+                              0.2, -0.9,  2.0, 0.7; ... % w2 Front Right (CCW)
+                              1.0,  1.0,  2.0, 1.0; ... % w3 Rear Left (CCW)
+                             -1.0,  1.0, -2.0, 1.0];    % w4 Rear Right (CW)
         
         otherwise % Default
             kp_att    = 128.505;
