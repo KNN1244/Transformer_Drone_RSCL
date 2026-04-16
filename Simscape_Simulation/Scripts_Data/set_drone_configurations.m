@@ -84,8 +84,17 @@ if (transforms)
         
         % 4. Assign Mixer and Angles (Same as before)
         config_idx = configs(ceil(form / 2));
-        [~,~,~,~,~,~, current_mixer] = adjust_flight_pid(config_idx);
+        current_mixer = adjust_motor_mixer(config_idx);
         mix_history(:,:,form) = current_mixer;
+
+        [kp_p(form), ki_p(form), kd_p(form), ...
+            filtD_p(form), limit_p(form)] = set_pitch_pid(config_idx);
+
+        [kp_r(form), ki_r(form), kd_r(form),...
+            filtD_r(form), limit_r(form)] = set_roll_pid(config_idx);
+
+        [kp_y(form), ki_y(form), kd_y(form),...
+            filtD_y(form), limit_y(form)] = set_yaw_pid(config_idx);
         
         for arm = 1:4
             angles(form, arm) = armPresets(config_idx, arm);
@@ -97,26 +106,62 @@ else
     % Static case
     angles = zeros([1 4]);
     timespots = 0;
+    config_idx = configs(:, 1);
     for x = 1:4
-        angles(:, x) = armPresets(configs(:, 1), x);
+        angles(:, x) = armPresets(config_idx, x);
     end
-    [~,~,~,~,~,~, mix_history] = adjust_flight_pid(configs(:, 1));
+    mix_history = adjust_motor_mixer(config_idx);
+    [kp_p, ki_p, kd_p, filtD_p, limit_p] = set_pitch_pid(config_idx);
+    [kp_r, ki_r, kd_r, filtD_r, limit_r] = set_roll_pid(config_idx);
+    [kp_y, ki_y, kd_y, filtD_y, limit_y] = set_yaw_pid(config_idx);
 end
 
 %% --- Final Timeseries Generation ---
+% Motor Mixer
 mixer_ts = timeseries(mix_history, timespots);
-mixer_ts.DataInfo.Interpolation = 'linear'; % Critical for smooth morphing
-% Ensure the timeseries objects are properly configured
-arm4.DataInfo.Interpolation = 'linear';
-arm3.DataInfo.Interpolation = 'linear';
-arm2.DataInfo.Interpolation = 'linear';
-arm1.DataInfo.Interpolation = 'linear';
 
-%% Create Timeseries Objects
+% Arm Angles
 arm4 = timeseries(angles(:, 4), timespots);
 arm3 = timeseries(angles(:, 3), timespots);
 arm2 = timeseries(angles(:, 2), timespots);
 arm1 = timeseries(angles(:, 1), timespots);
 
-% Create the Mixer timeseries (Simulink's From Workspace block will read this)
-mixer_ts = timeseries(mix_history, timespots);
+% Pitch PID
+filtM_pitch = 0.01;
+kp_pitch = timeseries(kp_p, timespots);
+ki_pitch = timeseries(ki_p, timespots);
+kd_pitch = timeseries(kd_p, timespots);
+filtD_pitch = timeseries(filtD_p, timespots);
+limit_pitch = timeseries(limit_p, timespots);
+
+% Roll PID
+filtM_yaw = 0.01;
+kp_yaw = timeseries(kp_y, timespots);
+ki_yaw = timeseries(ki_y, timespots);
+kd_yaw = timeseries(kd_y, timespots);
+filtD_yaw = timeseries(filtD_y, timespots);
+limit_yaw = timeseries(limit_y, timespots);
+
+% Yaw PID
+filtM_roll = 0.01;
+kp_roll = timeseries(kp_r, timespots);
+ki_roll = timeseries(ki_r, timespots);
+kd_roll = timeseries(kd_r, timespots);
+filtD_roll = timeseries(filtD_r, timespots);
+limit_roll = timeseries(limit_r, timespots);
+
+% Set all timeseries objects as linear interpolation
+allVars = evalin('base', 'whos');
+
+tsIdx = strcmp({allVars.class}, 'timeseries');
+tsNames = {allVars(tsIdx).name};
+
+for i = 1:length(tsNames)
+    tempTS = evalin('base', tsNames{i});
+    
+    tempTS.DataInfo.Interpolation = 'linear';
+    
+    assignin('base', tsNames{i}, tempTS);
+    
+    % fprintf('Updated interpolation for: %s\n', tsNames{i});
+end
